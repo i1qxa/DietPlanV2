@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Diet Plan</string>
+    <string name="title_plan">Plan</string>
+    <string name="title_detail">Detail</string>
+    <string name="title_recipes">Recipes</string>
+    <string name="kkal">kkal:</string>
+    <string name="protein_short">p:</string>
+    <string name="fat_short">f:</string>
+    <string name="carbon_short">c:</string>
+    <string name="hint_query">Put in the name of recipe and press to search</string>
+    <string name="total_time">Total time:</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="hint_empty_plan">Your Diet Plan is empty. Add more new Recipes</string>
+    <string name="hint_empty_response">No recipes were found for your request</string>
+    <string name="toast_add_recipe"> successfully added to your diet plan</string>
+    <string name="dialog_title">Internet Connection</string>
+    <string name="dialog_text">No Internet connection</string>
+    <string name="btn_check_internet">Check Internet</string>
+</resources>

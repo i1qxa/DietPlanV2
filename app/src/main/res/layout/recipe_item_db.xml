@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivRecipeLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingEnd="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tvRecipeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/ivRecipeLogo"
+            app:layout_constraintTop_toTopOf="@id/ivRecipeLogo"
+            app:layout_constraintBottom_toTopOf="@id/tvKcalHeader"
+            />
+
+        <TextView
+            android:id="@+id/tvKcalHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/kkal"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@id/ivRecipeLogo"
+            app:layout_constraintTop_toBottomOf="@id/tvRecipeName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+        <TextView
+            android:id="@+id/tvKcalValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/tvKcalHeader"
+            app:layout_constraintTop_toTopOf="@id/tvKcalHeader"
+            app:layout_constraintBottom_toBottomOf="@id/tvKcalHeader"
+            />
+        <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivRecipeLogo"
+            app:layout_constraintBottom_toBottomOf="@id/ivRecipeLogo"
+            android:src="@drawable/baseline_delete_24"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

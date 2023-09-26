@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_plan">
+
+    <fragment
+        android:id="@+id/navigation_plan"
+        android:name="dietplan.app.oqvvwe.ui.plan.PlanFragment"
+        android:label="@string/title_plan"
+        tools:layout="@layout/fragment_plan" >
+        <action
+            android:id="@+id/action_navigation_plan_to_recipesFragment"
+            app:destination="@id/recipesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="dietplan.app.oqvvwe.ui.detail.DetailFragment"
+        android:label="@string/title_detail"
+        tools:layout="@layout/fragment_detail" >
+        <argument
+            android:name="recipe_item_short"
+            app:argType="dietplan.app.oqvvwe.data.remote.entities.RecipeItemShort" />
+        <action
+            android:id="@+id/action_detailFragment_to_recipesFragment"
+            app:destination="@id/recipesFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recipesFragment"
+        android:name="dietplan.app.oqvvwe.ui.recipes.RecipesFragment"
+        android:label="@string/title_recipes"
+        tools:layout="@layout/fragment_recipes" >
+        <action
+            android:id="@+id/action_recipesFragment_to_detailFragment"
+            app:destination="@id/detailFragment"
+            app:launchSingleTop="false" />
+    </fragment>
+
+</navigation>

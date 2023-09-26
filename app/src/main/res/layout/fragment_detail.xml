@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.detail.DetailFragment">
+
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+    <TextView
+        android:id="@+id/tvRecipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
+        android:layout_marginTop="15dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:paddingStart="10dp"
+        />
+    <TextView
+        android:id="@+id/tvKcalHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvRecipeName"
+        android:text="@string/kkal"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingStart="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tvKcalValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tvKcalHeader"
+        app:layout_constraintTop_toBottomOf="@id/tvRecipeName"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/tvTotalTimeHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvKcalHeader"
+        android:text="@string/total_time"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:paddingStart="10dp"
+
+        />
+
+    <TextView
+        android:id="@+id/tvTotalTimeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/tvTotalTimeHeader"
+        app:layout_constraintTop_toBottomOf="@id/tvKcalHeader"
+        android:textSize="15sp"
+        />
+
+    <TextView
+        android:id="@+id/tvIngredientsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTotalTimeValue"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="@string/ingredients"
+        android:paddingStart="10dp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvIngredientsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvIngredientsHeader"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
