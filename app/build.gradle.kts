@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-//    val room_version = "2.5.2"
     val room_version = "2.6.0-beta01"
     val lifecycle_version = "2.6.2"
     val nav_version = "2.7.3"
