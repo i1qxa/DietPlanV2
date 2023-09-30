@@ -83,19 +83,34 @@ class MainActivity : AppCompatActivity() {
     private fun getAppsFlyerData() {
         val appId = "dietplan.app.oqvvwe"
         val devKey = "wBHGLzsvQWfFDxsGsy7Vvk"
-        val deviceId = AppsFlyerLib.getInstance().getAppsFlyerUID(this)
+        val deviceId = AppsFlyerLib.getInstance().getAppsFlyerUID(this).toString()
+        Log.d(APPS_LOG_TAG, deviceId.toString())
 
         lifecycleScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
 
             val request = Request.Builder()
-                .url("https://gcdsdk.appsflyer.com/install_data/v4.0/dietplan.app.oqvvwe?devkey=wBHGLzsvQWfFDxsGsy7Vvk&device_id=1695679086027-7024640647135813791")
+                .url("https://gcdsdk.appsflyer.com/install_data/v4.0/dietplan.app.oqvvwe?devkey=wBHGLzsvQWfFDxsGsy7Vvk&device_id=$deviceId")
                 .get()
                 .addHeader("accept", "application/json")
                 .build()
             val response = client.newCall(request).execute()
+            var isKey = true
+            var lastKey = ""
+            val map = (mutableMapOf <String, String>())
             if (response.isSuccessful) {
                 Log.d("RESPONSE", response.body?.string() ?: "")
+                response.body.toString().split(": ").map {
+                    if (isKey){
+                        map.put(it,"")
+                        lastKey = it
+                        isKey = false
+                    }else{
+                        map[lastKey] = it
+                        isKey = false
+                    }
+                var a = map
+                }
             }
         }
     }
