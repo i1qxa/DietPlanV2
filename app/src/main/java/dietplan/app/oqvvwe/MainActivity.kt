@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity() {
         val appId = "dietplan.app.oqvvwe"
         val devKey = "wBHGLzsvQWfFDxsGsy7Vvk"
         val deviceId = AppsFlyerLib.getInstance().getAppsFlyerUID(this).toString()
-        Log.d(APPS_LOG_TAG, deviceId.toString())
+        Log.d(APPS_LOG_TAG, deviceId)
 
         lifecycleScope.launch(Dispatchers.IO) {
             val client = OkHttpClient()
@@ -97,19 +97,16 @@ class MainActivity : AppCompatActivity() {
             val response = client.newCall(request).execute()
             var isKey = true
             var lastKey = ""
-            val map = (mutableMapOf <String, String>())
+            val map = (mutableMapOf<String, String>())
             if (response.isSuccessful) {
-                Log.d("RESPONSE", response.body?.string() ?: "")
-                response.body.toString().split(": ").map {
-                    if (isKey){
-                        map.put(it,"")
-                        lastKey = it
-                        isKey = false
-                    }else{
-                        map[lastKey] = it
-                        isKey = false
-                    }
-                var a = map
+                val responseStr = response.body?.string() ?: ""
+                val responseStrReplaced =
+                    responseStr.replace("\"", "")
+                        .replace("{", "")
+                        .replace("}", "")
+                responseStrReplaced.split(", ").map {
+                    val subList = it.split(": ")
+                    map[subList[0]] = subList[1]
                 }
             }
         }
