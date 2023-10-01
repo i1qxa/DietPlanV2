@@ -77,5 +77,7 @@ dependencies {
     implementation ("com.onesignal:OneSignal:[5.0.0, 5.99.99]")
     implementation ("com.appsflyer:af-android-sdk:6.12.2")
     implementation ("com.android.installreferrer:installreferrer:2.2")
-    implementation("androidx.ads:ads-identifier:1.0.0-alpha05")
+    implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
 }

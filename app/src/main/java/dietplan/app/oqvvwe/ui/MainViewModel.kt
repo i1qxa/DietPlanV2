@@ -10,4 +10,7 @@ class MainViewModel:ViewModel() {
     fun changeInternetStatus(status:Boolean){
         internetStatus.value = status
     }
+
+
+
 }
