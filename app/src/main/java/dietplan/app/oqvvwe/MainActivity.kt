@@ -1,6 +1,7 @@
 package dietplan.app.oqvvwe
 
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
@@ -12,23 +13,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.appsflyer.AppsFlyerLib
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
-import dietplan.app.oqvvwe.data.DataRepositoryImpl
-import dietplan.app.oqvvwe.data.db.DataDB
 import dietplan.app.oqvvwe.databinding.ActivityMainBinding
 import dietplan.app.oqvvwe.domain.LinkData
 import dietplan.app.oqvvwe.ui.MainViewModel
+import dietplan.app.oqvvwe.ui.second.SecondActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
+const val MY_PREFS_STORE = "my_prefs_store"
+const val MY_DATA = "my_data"
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val repository by lazy { DataRepositoryImpl(application) }
-
     private val viewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+
+    private val myPrefs by lazy { this.getSharedPreferences(MY_PREFS_STORE, Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         checkInternet()
         observeInternetStatus()
-        getAppsFlyerData()
+    }
+
+    private fun checkPrefs() {
+        val prefsData = myPrefs.getString(MY_DATA, "") ?: ""
+        if (prefsData.isNotEmpty()) {
+            launchSecondActivity()
+        } else getAppsFlyerData()
+
+    }
+
+    private fun launchSecondActivity() {
+        val intent = Intent(this, SecondActivity::class.java)
+        startActivity(intent)
     }
 
     private fun checkInternet() {
@@ -66,6 +81,7 @@ class MainActivity : AppCompatActivity() {
     private fun observeInternetStatus() {
         viewModel.internetStatus.observe(this, Observer {
             if (!it) showCheckInternetDialog()
+            else checkPrefs()
         })
     }
 
@@ -119,7 +135,7 @@ class MainActivity : AppCompatActivity() {
                 if (map.containsKey("af_status")) linkData.appsAfStatus = map["af_status"]
             }
             val newClient = OkHttpClient()
-            if (linkData.getLink().isNotEmpty()){
+            if (linkData.getLink().isNotEmpty()) {
                 val newRequest = Request.Builder()
                     .url(linkData.getLink())
                     .get()
@@ -127,24 +143,12 @@ class MainActivity : AppCompatActivity() {
                     .build()
                 val newResponse = newClient.newCall(newRequest).execute()
                 if (newResponse.isSuccessful) {
-                    Log.d("RESP", newResponse.body?.string().toString())
-                    val newResponseStr = newResponse.body?.string()?.replace("\"", "")?.replace("{", "")
-                        ?.replace("}", "")?.split(": ")?: listOf("","")
-                    if (newResponseStr.size > 1){
-                        val linkClient = OkHttpClient()
-                        val linkRequest = Request.Builder()
-                            .url(newResponseStr[1])
-                            .get()
-                            .addHeader("accept", "application/json")
-                            .build()
-                        val linkResponse = linkClient.newCall(linkRequest).execute()
-                        if (linkResponse.isRedirect){
-                            val redirectLink = linkResponse.headers("Location")[0]
-                            if (redirectLink != "http://localhost/") {
-                                repository.editData(DataDB(1,redirectLink))
-
-                            }
-                        }
+                    val resp = newResponse.body?.string().toString()
+                    val regex = Regex("""(https://[a-z\d./-]*)""")
+                    val link = regex.find(resp)?.value
+                    if (link != null) {
+                        myPrefs.edit().putString(MY_DATA, link).apply()
+                        launchSecondActivity()
                     }
                 }
             }

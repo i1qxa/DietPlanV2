@@ -1,19 +1,14 @@
 package dietplan.app.oqvvwe.ui.second
 
-import android.app.Application
-import android.content.Context
-import android.content.Intent
+import android.content.SharedPreferences
 import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import dietplan.app.oqvvwe.data.DataRepositoryImpl
-import dietplan.app.oqvvwe.data.db.DataDB
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import dietplan.app.oqvvwe.MY_DATA
 
 class MyWebClient(
     private val progress: View,
-    private val application: Application
+    private val prefs: SharedPreferences,
 ) : WebViewClient() {
 
     override fun onPageFinished(view: WebView?, url: String?) {
@@ -29,13 +24,12 @@ class MyWebClient(
     }
 
     private fun checkPath(adress: String) {
-        TODO("NEED TO GET APP_LINK_SAVE")
-        if (adress.contains("app_link_save")) {
-            val newUrl = ""
-            val repo = DataRepositoryImpl(application)
-            }
+        val regex = Regex("""(https://[a-z\d./-]*)""")
+        val newAdress = regex.find(adress)?.value
+        if (newAdress != null) {
+            prefs.edit().putString(MY_DATA, newAdress).apply()
+        }
     }
-
 
 
 }

@@ -11,16 +11,12 @@ import android.webkit.WebSettings
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import dietplan.app.oqvvwe.MY_DATA
+import dietplan.app.oqvvwe.MY_PREFS_STORE
 import dietplan.app.oqvvwe.R
-import dietplan.app.oqvvwe.data.DataRepositoryImpl
 import dietplan.app.oqvvwe.databinding.ActivitySecondBinding
 import kotlinx.coroutines.launch
 
@@ -29,14 +25,14 @@ class SecondActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySecondBinding.inflate(layoutInflater) }
     private val myWeb by lazy { binding.mainWebView }
     private val myPb by lazy { binding.mainPB }
-    private val repo by lazy { DataRepositoryImpl(application) }
-    private val myPrefs by lazy { this.getSharedPreferences("my_prefs", Context.MODE_PRIVATE) }
+    private val myPrefs by lazy { this.getSharedPreferences(MY_PREFS_STORE, Context.MODE_PRIVATE) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         tryToGetData(savedInstanceState)
         checkNotificationPermissions()
+        this.actionBar?.hide()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -54,11 +50,11 @@ class SecondActivity : AppCompatActivity() {
             myWeb.restoreState(bundle)
         }
         lifecycleScope.launch {
-            val savedStr = repo.getData()
+            val savedStr = myPrefs.getString(MY_DATA,"")?:""
             myWeb.loadUrl(savedStr)
             myWeb.settings.domStorageEnabled = true
             myWeb.settings.javaScriptEnabled = true
-            myWeb.webViewClient = MyWebClient(myPb,application)
+            myWeb.webViewClient = MyWebClient(myPb,myPrefs)
             myWeb.settings.setSupportZoom(false)
             myWeb.settings.cacheMode =WebSettings.LOAD_NO_CACHE
         }

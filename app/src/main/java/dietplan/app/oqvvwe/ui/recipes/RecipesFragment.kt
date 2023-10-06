@@ -1,11 +1,16 @@
 package dietplan.app.oqvvwe.ui.recipes
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -25,6 +30,8 @@ class RecipesFragment : Fragment() {
 
     private val rvAdapter by lazy { RecipesRVAdapter() }
 
+    private val queryLD = MutableLiveData<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,7 +47,34 @@ class RecipesFragment : Fragment() {
         observeViewModel()
         setupRVAdapter()
         setupRecyclerView()
-        setupBtnSearchClickListener()
+        setupTextChangeListener()
+        lifecycleScope.launch {
+            observeTextChange()
+        }
+    }
+
+    private fun setupTextChangeListener() {
+        binding.etQuery.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                queryLD.value = binding.etQuery.text.toString()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+    }
+
+    private suspend fun observeTextChange() {
+        queryLD.observe(viewLifecycleOwner) {
+            lifecycleScope.launch {
+                viewModel.getRecipeList(it)
+            }
+        }
     }
 
     private fun observeViewModel() {
@@ -55,16 +89,6 @@ class RecipesFragment : Fragment() {
         viewModel.errorRequest.observe(viewLifecycleOwner) {
             if (it) {
                 binding.tvHitTV.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    private fun setupBtnSearchClickListener() {
-        binding.btnSearch.setOnClickListener {
-            binding.tvHitTV.visibility = View.GONE
-            binding.pbRecipes.visibility = View.VISIBLE
-            lifecycleScope.launch {
-                viewModel.getRecipeList(binding.etQuery.text.toString())
             }
         }
     }
